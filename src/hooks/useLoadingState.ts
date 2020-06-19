@@ -1,23 +1,22 @@
 import {useReducer} from 'react';
 
 interface State<T> {
-  status: 'error' | 'rejected' | 'resolved' | 'pending',
-  data: T,
+  status: 'error' | 'rejected' | 'resolved' | 'pending';
+  data: T;
   error: {
-    error: string
-  }
+    error: string;
+  };
 };
 
 interface Action<T> {
-  type: 'error' | 'success' | 'started',
-  data: T
+  type: 'error' | 'success' | 'started';
+  data: T;
+  error: {
+    error: string;
+  }
 };
 
-interface Reducer<T> {
-  (State<T>, Action<T>) => State<T>
-};
-
-const reducer: Reducer<T> = function (state: State<T>, Action<T>) {
+const createReducer = <T>() => (state: State<T>, action: Action<T>): State<T> => {
   switch (action.type) {
     case 'error': {
       return {
@@ -45,10 +44,13 @@ const reducer: Reducer<T> = function (state: State<T>, Action<T>) {
   }
 }
 
-export const useLoadingState = (defaultData: T = null) => {
-  return useReducer(reducer: Reducer<T>, {
+function useLoadingState<T>(defaultData: T) {
+  const reducer = createReducer<T>();
+  return useReducer(reducer, {
     status: 'idle',
     data: defaultData,
     error: null,
   });
 };
+
+export default useLoadingState;
