@@ -1,7 +1,7 @@
 import React from 'react';
 import {Header, List} from 'semantic-ui-react'
 
-interface Book {
+export interface Book {
   title: string,
   subtitle: string,
   isbn: string,
